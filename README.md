@@ -9,7 +9,7 @@
 ### Documentation
 
  * **General**
-   - [Help Doc](./docs/help.docx)
+   - [Help Doc](./docs/help.md)
 
 ### Directory Layout
 
