@@ -1,0 +1,91 @@
+
+@import "../../node_modules/font-awesome/less/font-awesome.less";
+@import "../../node_modules/bootstrap/less/bootstrap.less";
+
+//
+// Colors
+// -----------------------------------------------------------------------------
+
+@white-base:            hsl(255, 255, 255);
+
+@gray-base:             hsl(0, 0, 0);
+@gray-darker:           lighten(@gray-base, 13.5%); // #222
+@gray-dark:             lighten(@gray-base, 25%);   // #404040
+@gray:                  lighten(@gray-base, 33.5%); // #555
+@gray-light:            lighten(@gray-base, 46.7%); // #777
+@gray-lighter:          lighten(@gray-base, 93.5%); // #eee
+
+//
+// Typography
+// -----------------------------------------------------------------------------
+
+@font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;
+
+//
+// Layout
+// -----------------------------------------------------------------------------
+
+@max-content-width:     1000px;
+
+//
+// Media queries breakpoints
+// -----------------------------------------------------------------------------
+
+@screen-xs-min:         480px;  // Extra small screen / phone
+@screen-sm-min:         768px;  // Small screen / tablet
+@screen-md-min:         992px;  // Medium screen / desktop
+@screen-lg-min:         1200px; // Large screen / wide desktop
+
+//
+// Animations
+// -----------------------------------------------------------------------------
+
+@animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;
+
+//
+// Bootstrap
+// -----------------------------------------------------------------------------
+
+.modal {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.modal-header .close {
+  margin-top: -2px;
+  color: #fff;
+}
+
+.modal-title {
+  color: #fff;
+}
+
+.modal-content {
+	border-radius: 0;
+}
+
+@modal-content-bg: #0E1116;
+@modal-backdrop-opacity: .15;
+@modal-header-border-color: #0E1116;
+
+
+@btn-default-color: #fff;
+@btn-default-bg: #7C838B;
+@btn-default-border: #7C838B;
+
+@btn-primary-color: #fff;
+@btn-primary-bg: #4694C5;
+@btn-primary-border: #4694C5;

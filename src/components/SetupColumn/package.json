@@ -1,0 +1,6 @@
+{
+  "name": "SetupColumn",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./SetupColumn.js"
+}

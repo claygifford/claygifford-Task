@@ -1,0 +1,60 @@
+/* claygifford-Task | MIT License | https://github.com/claygifford/claygifford-task/ */
+
+@import '../variables.less';
+
+@action-color: #fff;
+@inactive-color: #25282f;
+@description-color: #84898f;
+
+.SetupColumn {
+
+	&-container
+	{
+    display:table;
+    width: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+	}
+	
+	&-row
+	{
+			height: 100%;
+			display: table-row;
+	}
+	
+	&-col
+	{
+    display: table-cell;
+    width: 48%;
+	}
+	
+	&-col-middle
+	{
+    display: table-cell;
+    width: 4%;
+	}
+	
+	&-col-border
+	{
+		//border-left: 3px dashed @inactive-color;
+		background-image: linear-gradient(to bottom, #333 40%, rgba(255, 255, 255, 0) 20%);
+    background-position: left;
+    background-size: 2px 12px;
+    background-repeat: repeat-y;
+	}
+		
+  &-titleDescription {
+    color: @description-color;
+  }
+		
+  &-footer {
+    margin: 0;
+    padding: 4px 4px 4px 4px;
+  }
+  
+  &-btn {
+		min-width: 80px;
+		margin: 2px 6px 2px 2px;
+		color: @action-color;
+  }
+}
