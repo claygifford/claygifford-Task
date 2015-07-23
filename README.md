@@ -1,8 +1,8 @@
 # claygifford-Task
 
-> This project is a Test for Tradovate
+> This project is a Test for Tradovate.
 > You can use this app to simulate drag and drop for a Column Setup dialog
-> according to a  ew business rules. There are two sets of columns, 
+> according to a few business rules. There are two sets of columns, 
 > available and visible.
 > Hopefully you like it!
 
@@ -44,7 +44,7 @@ Just [clone](github-windows://openRepo/https://github.com/claygifford/claygiffor
 [fork](https://github.com/claygifford/claygifford-task/fork) the repo:
 
 ```shell
-$ git clone -o claygifford-Task -b master --single-branch \
+$ git clone -o claygifford-Task -b master --single-branch 
       https://github.com/claygifford/claygifford-task.git
 $ cd claygifford-Task
 $ npm install -g gulp           # Install Gulp task runner globally
