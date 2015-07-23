@@ -7,7 +7,7 @@
 
 ![ScreenShot](Screenshot1.png)
 
-![ScreenShot](Screenshot1.png)
+![ScreenShot](Screenshot2.png)
 
 ### Getting Started
 
