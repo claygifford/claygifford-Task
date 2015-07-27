@@ -4,14 +4,11 @@ import styles from './App.less';
 import withContext from '../../decorators/withContext';
 import withStyles from '../../decorators/withStyles';
 import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
 import Header from '../Header';
-import ContentPage from '../ContentPage';
 import HomePage from '../HomePage';
+import AboutPage from '../AboutPage';
 import NotFoundPage from '../NotFoundPage';
 import Footer from '../Footer';
-
-const pages = { ContentPage, NotFoundPage };
 
 @withContext
 @withStyles(styles)
@@ -25,12 +22,16 @@ class App {
     window.addEventListener('popstate', this.handlePopState);
   }
 
+  shouldComponentUpdate(nextProps) {
+    return this.props.path !== nextProps.path;
+  }
+
   componentWillUnmount() {
     window.removeEventListener('popstate', this.handlePopState);
   }
 
-  shouldComponentUpdate(nextProps) {
-    return this.props.path !== nextProps.path;
+  handlePopState(event) {
+    AppActions.navigateTo(window.location.pathname, {replace: !!event.state});
   }
 
   render() {
@@ -39,27 +40,24 @@ class App {
     switch (this.props.path) {
 
       case '/':
+      case '/Home':
         component = <HomePage />;
         break;
-
-      case '/about':
-				let page = AppStore.getPage(this.props.path);
-        component = React.createElement(pages[page.component], page);
-				component = <HomePage />;
+      case '/About':
+        component = <AboutPage />;
         break;
     }
 
-    return component ? (
-      <div>
-        <Header />
-        {component}
-        <Footer />
-      </div>
-	) : <NotFoundPage />;
-  }
-
-  handlePopState(event) {
-    AppActions.navigateTo(window.location.pathname, {replace: !!event.state});
+    if (component) {
+      return (
+        <div>
+          <Header />
+          {component}
+          <Footer />
+        </div>
+      );
+    }
+    return <NotFoundPage />;
   }
 
 }

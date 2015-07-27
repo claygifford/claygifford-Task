@@ -17,7 +17,7 @@ var data = {
 		{ id: 'initialMargin', name: 'Initial Margin'}
   ],
 	visibleColumns: [
-		{ id: 'symbolAndDescription', name: 'Symbol & Description'},
+		{ id: 'symbolAndDescription', name: 'Symbol & Description', isLocked: true},
 		{ id: 'changePercent', name: 'Change %'},
 		{ id: 'change', name: 'Change'},
 		{ id: 'last', name: 'Last'},
@@ -36,7 +36,26 @@ class SetupColumn extends React.Component {
 
   constructor() {
     super();
-    this.state = { showModal: false, clone: { availableColumns: [], visibleColumns: [] } };
+    this.state = {
+      bodySize: {height: 'calc(100% - 166px)'},
+      showModal: false,
+      clone: { availableColumns: [], visibleColumns: [] } };
+  }
+
+  componentWillMount() {
+    this.updateDimensions();
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  updateDimensions() {
+    this.setState({ bodySize: {height: 'calc(100% - 166px)'} });
   }
 
   cancel() {
@@ -53,12 +72,16 @@ class SetupColumn extends React.Component {
     this.setState({ showModal: false });
   }
 
+  onColumnsChanged() {
+    this.setState({ clone: this.state.clone });
+  }
+
   render() {
     return (
 		<div className="SetupColumn">
 			<div className="text-center">
 				<Button className="btn-primary btn-lg btn-block"
-						onClick={this.open.bind(this)}>
+                onClick={this.open.bind(this)}>
 					Open Column Setup
 				</Button>
 			</div>
@@ -67,27 +90,27 @@ class SetupColumn extends React.Component {
 					<Modal.Title>Configure Data Fields</Modal.Title>
 					<span className="SetupColumn-titleDescription">Drag & drop between columns to configure visible data.</span>
 				</Modal.Header>
-				<Modal.Body>
-					<div className="SetupColumn-container">
-						<div className="SetupColumn-row">
-							<div className="SetupColumn-col">
-								<span className="SetupColumn-titleDescription">Available</span>
-							</div>
-							<div className="SetupColumn-col-middle"/>
-							<div className="SetupColumn-col">
-								<span className="SetupColumn-titleDescription">Visible</span>
-							</div>
-						</div>
-						<div className="SetupColumn-row">
-							<div className="SetupColumn-col">
-								<SortableList data={this.state.clone} columns={this.state.clone.availableColumns}/>
-							</div>
-							<div className=" SetupColumn-col-middle SetupColumn-col-border"/>
-							<div className="SetupColumn-col">
-								<SortableList data={this.state.clone} columns={this.state.clone.visibleColumns}/>
-							</div>
-						</div>
-					</div>
+				<Modal.Body style={this.state.bodySize}>
+          <div className="SetupColumn-container">
+            <div className="SetupColumn-row">
+              <div className="SetupColumn-col">
+                <span className="SetupColumn-titleDescription">Available</span>
+              </div>
+              <div className="SetupColumn-col-middle"/>
+              <div className="SetupColumn-col">
+                <span className="SetupColumn-titleDescription">Visible</span>
+              </div>
+            </div>
+            <div className="SetupColumn-row">
+              <div className="SetupColumn-col-fill  no-float">
+                <SortableList data={this.state.clone} columns={this.state.clone.availableColumns} canLock='false' callbackParent={this.onColumnsChanged.bind(this)}/>
+              </div>
+              <div className="SetupColumn-col-middle SetupColumn-col-border  no-float"/>
+              <div className="SetupColumn-col-fill  no-float">
+                <SortableList data={this.state.clone} columns={this.state.clone.visibleColumns} canLock='true' callbackParent={this.onColumnsChanged.bind(this)}/>
+              </div>
+            </div>
+          </div>
 				</Modal.Body>
 				<Modal.Footer>
 					<div className="SetupColumn-footer text-left">
@@ -102,4 +125,5 @@ class SetupColumn extends React.Component {
 		);
   }
 }
+
 export default SetupColumn;

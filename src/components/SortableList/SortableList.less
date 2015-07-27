@@ -1,29 +1,55 @@
-/* claygifford-Task | MIT License | http://www.reactstarterkit.com/ */
+/* claygifford-Task | MIT License | https://github.com/claygifford/claygifford-task/ */
 
 @import '../variables.less';
 
 @description-color: #84898f;
+@locked-color: #4c5359;
+@dragged-color: #24292F;
+@action-color: #fff;
 
 .SortableList {
-  background: blue;
-  height: 100%;
+    
 	ul {
-    //display: inline-block;
 		list-style: none;
 		margin:0;
 		padding:0;
-		background: red;
 	}
 	
 	li {
-    //display: block;
+    list-style-type:none;
 		margin: 0px 0px 0px 0px;
 		padding: 10px 10px 10px 10px;
 		background: #0e1116;
-		color: #fff;
+		color: @action-color;
+    cursor: move;
 	}
-		
+    
 	li.dragging {
-		background: #24292F;
+		background: @dragged-color;
 	}
+
+  li.insertBefore {
+		border-top: 1px solid @action-color;
+	}
+  
+  li.insertAfter {
+    border-bottom: 1px solid @action-color;
+	}
+  li.locked {
+    color: @locked-color;
+    cursor: default;
+  }
+}
+ 
+.dragElement {
+  list-style-type:none; 
+  background: @dragged-color;
+  color: @action-color;
+  padding: 10px 10px 10px 10px;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,.8);
+  position: absolute;
+  top:0;
+  left:0;
 }

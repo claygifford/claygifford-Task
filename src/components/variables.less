@@ -43,6 +43,19 @@
 @animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;
 
 //
+// general utilities
+// -----------------------------------------------------------------------------
+.noselect {
+  -webkit-touch-callout: none;/*for mobile*/
+  -webkit-user-select: none;/*for chrome*/
+  -khtml-user-select: none;/*for safari*/
+  -moz-user-select: none;/*for Mozilla*/
+  -ms-user-select: none;/*for mircosoft*/
+  -o-user-select: none;/*for opera*/
+  user-select: none;/*base css ,but not work in all browsers*/
+}
+
+//
 // Bootstrap
 // -----------------------------------------------------------------------------
 
@@ -58,10 +71,20 @@
     height: 100%;
   }
 }
+
 .modal-dialog {
   display: inline-block;
   text-align: left;
   vertical-align: middle;
+  height: 80%;
+}
+
+.modal-header {
+  height: 77px;
+}
+
+.modal-footer {
+  height: 89px;
 }
 
 .modal-header .close {
@@ -75,6 +98,12 @@
 
 .modal-content {
 	border-radius: 0;
+  height: 80%;
+}
+
+.modal-body {
+  height: calc(100% - 166px);
+  overflow-y: auto;
 }
 
 @modal-content-bg: #0E1116;

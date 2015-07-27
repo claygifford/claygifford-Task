@@ -3,195 +3,319 @@
 import React from 'react';
 import styles from './SortableList.less';
 import withStyles from '../../decorators/withStyles';
+import Draggable from '../Draggable';
+
+// var DragElement = React.createClass({
+  // propTypes: {
+    // children: React.PropTypes.node.isRequired
+  // },
+
+  // componentDidMount: function() {
+    // this.dragElement = document.createElement('div');
+    // document.body.appendChild(this.dragElement);
+    // this.child = React.render(this.props.children, this.dragElement);
+  // },
+
+  // componentDidUpdate: function() {
+    // this.child = React.render(this.props.children, this.dragElement);
+  // },
+
+  // componentWillUnmount: function() {
+    // React.unmountComponentAtNode(this.dragElement);
+    // document.body.removeChild(this.dragElement);
+  // },
+
+  // render: function() {
+    // return null;
+  // }
+// });
+
+// var Draggable = React.createClass({
+  // propTypes: {
+    // children: React.PropTypes.node.isRequired
+  // },
+
+  // getInitialState: function() {
+    // return {
+      // mouseDown: false,
+      // dragging: false
+    // };
+  // },
+
+  // style: function() {
+    // if (this.state.dragging) {
+      // return {
+        // position: 'absolute',
+        // left: this.state.left,
+        // top: this.state.top,
+        // height: this.state.height,
+        // width: this.state.width
+        // };
+    // } else {
+      // return {};
+    // }
+  // },
+
+  // onMouseDown: function(event) {
+    // var pageOffset;
+    // if (event.button === LEFT_BUTTON) {
+      // event.stopPropagation();
+      // this.addEvents();
+
+      // var element = React.findDOMNode(this);
+      // pageOffset = element.getBoundingClientRect();
+
+      // return this.setState({
+        // mouseDown: true,
+        // originX: event.pageX,
+        // originY: event.pageY,
+        // elementX: pageOffset.left,
+        // elementY: pageOffset.top,
+        // offsetX: event.offsetX,
+        // offsetY: event.offsetY,
+        // height: pageOffset.height,
+        // width: pageOffset.width
+      // });
+    // }
+  // },
+
+  // onMouseMove: function(event) {
+    // var base, deltaX, deltaY, distance;
+    // deltaX = event.pageX - this.state.originX;
+    // deltaY = event.pageY - this.state.originY;
+    // distance = Math.abs(deltaX) + Math.abs(deltaY);
+    // if (!this.state.dragging && distance > DRAG_THRESHOLD) {
+      // this.setState({
+        // dragging: true
+      // });
+      // if (typeof (base = this.props).onDragStart === 'function') {
+        // base.onDragStart(this.props);
+      // }
+    // }
+    // if (this.state.dragging) {
+      // return this.setState({
+        // left: this.state.elementX + deltaX + document.body.scrollLeft,
+        // top: this.state.elementY + deltaY + document.body.scrollTop
+      // }
+      // );
+    // }
+  // },
+
+  // onMouseUp: function() {
+    // var base;
+    // this.removeEvents();
+    // if (this.state.dragging) {
+      // if (typeof (base = this.props).onDragStop === 'function') {
+        // base.onDragStop(this.props);
+      // }
+      // return this.setState({
+        // dragging: false
+      // });
+    // }
+  // },
+
+  // onMouseEnter: function(event) {
+    // var pageOffset, isBefore;
+
+    // var element = React.findDOMNode(this);
+    // pageOffset = element.getBoundingClientRect();
+
+    // if ((pageOffset.top + pageOffset.height / 2) > event.pageY) {
+      // isBefore = true;
+    // } else {
+      // isBefore = false;
+    // }
+
+    // var base;
+    // if (typeof (base = this.props).onDragOver === 'function') {
+      // base.onDragOver(this.props, isBefore);
+    // }
+  // },
+
+  // onTargetMouseMove: function(event) {
+    // var pageOffset, isBefore;
+
+    // var element = React.findDOMNode(this);
+    // pageOffset = element.getBoundingClientRect();
+
+    // if ((pageOffset.top + pageOffset.height / 2) > event.pageY) {
+      // isBefore = true;
+    // } else {
+      // isBefore = false;
+    // }
+
+    // var base;
+    // if (typeof (base = this.props).onDragOver === 'function') {
+      // base.onDragOver(this.props, isBefore);
+    // }
+  // },
+
+  // onTargetMouseLeave: function() {
+    // var base;
+    // if (typeof (base = this.props).onDragLeave === 'function') {
+      // base.onDragLeave(this.props);
+    // }
+  // },
+
+  // addEvents: function() {
+    // document.addEventListener('mousemove', this.onMouseMove);
+    // return document.addEventListener('mouseup', this.onMouseUp);
+  // },
+
+  // removeEvents: function() {
+    // document.removeEventListener('mousemove', this.onMouseMove);
+    // return document.removeEventListener('mouseup', this.onMouseUp);
+  // },
+
+  // render: function() {
+    // if (this.state.dragging) {
+      // return (
+      // <div>
+        // <DragElement><div className='dragElement' style={this.style()}>{this.props.children}</div></DragElement>
+        // {this.props.children}
+      // </div>
+      // );
+    // }
+    // return (
+      // <div className='noselect'
+           // onDragStart={this.dragStart}
+           // onMouseDown={this.onMouseDown}
+           // onMouseMove={this.onTargetMouseMove}
+           // onMouseLeave={this.onTargetMouseLeave}>
+           // {this.props.children}
+      // </div>
+    // );
+  // }
+// });
 
 @withStyles(styles)
 class SortableList extends React.Component {
+  static propTypes = {
+    data: React.PropTypes.any.isRequired,
+    columns: React.PropTypes.any.isRequired,
+    callbackParent: React.PropTypes.func.isRequired,
+    canLock: React.PropTypes.bool
+  };
 
   constructor(props) {
     super(props);
-    this.state = {data: this.props.data, columns: this.props.columns};
+    this.state = {
+      data: this.props.data,
+      columns: this.props.columns,
+      canLock: this.props.canLock,
+      isDragging: false };
   }
 
   dragStart(e) {
-    e.dataTransfer.effectAllowed = 'move';
+    e.item.isDragging = true;
 
-    var key = e.currentTarget.dataset.key;
-    e.dataTransfer.setData("text", key);
-
-    this.state.data.dragged = this.getItemById(key);
-    this.state.data.columnsOrigin = this.state.columns;
-  }
-
-  getItemById(id) {
-    for(var i = 0; i < this.state.columns.length; i++) {
-      if (this.state.columns[i].id === id) {
-        return this.state.columns[i];
-      }
-    }
-    return null;
-  }
-
-  getIndexById(id) {
-    for(var i = 0; i < this.state.columns.length; i++) {
-      if (this.state.columns[i].id === id) {
-        return i;
-      }
-    }
-    return null;
-  }
-
-  dataContainsId(id) {
-    for(var i = 0; i < this.state.data.length; i++) {
-      if (this.state.data[i].id === id) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  dragEnd(e) {
-    e.preventDefault();
-
-    if (this.state.data.isValidDrop === false){
-      return;
-    }
-
-    var item = this.state.data.dragged;
-
-    //remove item from source.
-    var index = this.getIndexById(item.id);
-    if (index !== null) {
-      this.state.columns.splice(index, 1);
-    }
-
+    this.state.data.isDragging = true;
     this.setState({data: this.state.data, columns: this.state.columns});
   }
 
-  dragEnter(e) {
-    e.preventDefault();
-    
-     var item = this.state.data.dragged;
+  dragStop(e) {
+    var index;
 
-    // if the dragOver source is the same as the origin return.
-    if (this.state.data.columnsOrigin === this.state.columns) {
+    e.item.isDragging = false;
+    this.state.data.isDragging = false;
+
+    if (this.state.data.dropTarget === null) {
       return;
     }
 
-    var index = this.getIndexById(item.id);
-    if (index !== null) {
-      this.state.columns.splice(index, 1);
+    var target = this.state.data.dropTarget.target;
+    var items = this.state.data.dropTarget.items;
+
+    index = this.state.columns.indexOf(e.item);
+    this.state.columns.splice(index, 1);
+
+    index = items.indexOf(target);
+    if (target.isInsertBefore) {
+      items.splice(index, 0, e.item);
+    } else {
+      items.splice(++index, 0, e.item);
     }
 
+    target.isInsertBefore = false;
+    target.isInsertAfter = false;
 
-    //this.dragged = e.currentTarget;
-
-    // var item = this.state.data.dragged;
-    // var over = e.currentTarget;
-    // var dragging = this.state.data.dragging;
-    // var from = isFinite(dragging) ? dragging : this.dragged;
-    // var to = Number(over.dataset.id);
-    // if((e.clientY - over.offsetTop) > (over.offsetHeight / 2)) {
-      // to++;
-    // }
-    // if(from < to) {
-      // to--;
-    // }
-
-    // Move from 'a' to 'b'
-    //var items = this.state.data;
-    //items.splice(to, 0, items.splice(from,1)[0]);
-    //items.splice(0, 0, this.state.data.dragged);
-    //this.sort(items, to);
-
-
-    this.state.columns.splice(0, 0, this.state.data.dragged);
-    this.setState({data: this.state.data, columns: this.state.columns});
-
-    this.state.data.isValidDrop = true;
+    this.setState({data: this.state.data});
+    this.props.callbackParent(this.state.data);
   }
 
-  dragOver(e) {
-    e.preventDefault();
+  dragOver(e, isBefore) {
+    if (this.state.data.isDragging) {
+      e.item.isInsertBefore = isBefore;
+      e.item.isInsertAfter = !isBefore;
 
-    // var item = this.state.data.dragged;
-
-    // // if the dragOver source is the same as the origin return.
-    // if (this.state.data.columnsOrigin === this.state.columns) {
-      // return;
-    // }
-
-    // var index = this.getIndexById(item.id);
-    // if (index !== null) {
-      // this.state.columns.splice(index, 1);
-    // }
-
-
-    // //this.dragged = e.currentTarget;
-
-    // // var item = this.state.data.dragged;
-    // // var over = e.currentTarget;
-    // // var dragging = this.state.data.dragging;
-    // // var from = isFinite(dragging) ? dragging : this.dragged;
-    // // var to = Number(over.dataset.id);
-    // // if((e.clientY - over.offsetTop) > (over.offsetHeight / 2)) {
-      // // to++;
-    // // }
-    // // if(from < to) {
-      // // to--;
-    // // }
-
-    // // Move from 'a' to 'b'
-    // //var items = this.state.data;
-    // //items.splice(to, 0, items.splice(from,1)[0]);
-    // //items.splice(0, 0, this.state.data.dragged);
-    // //this.sort(items, to);
-
-
-    // this.state.columns.splice(0, 0, this.state.data.dragged);
-    // this.setState({data: this.state.data, columns: this.state.columns});
-
-    // this.state.data.isValidDrop = true;
-  }
-
-  dragLeave(e){
-    e.preventDefault();
-
-    var item = this.state.data.dragged;
-
-    // if the dragOver source is the same as the origin return.
-    if (this.state.data.columnsOrigin === this.state.columns) {
-      return;
+      this.state.data.dropTarget = { target: e.item, items: this.state.columns };
+      this.setState({data: this.state.data});
     }
+  }
 
-    var index = this.getIndexById(item.id);
-    if (index !== null) {
-      this.state.columns.splice(index, 1);
+  dragLeave(e) {
+    if (this.state.data.isDragging) {
+      e.item.isInsertBefore = false;
+      e.item.isInsertAfter = false;
+
+      this.state.data.dropTarget = null;
+      this.setState({data: this.state.data});
+    }
+  }
+
+  doubleClick(item) {
+    var column, i;
+
+    if (this.state.canLock) {
+      var index = this.state.columns.indexOf(item);
+      if (item.isLocked){
+        for	(i = index; i < this.state.columns.length; i++) {
+          column = this.state.columns[i];
+          if (column.isLocked) {
+            column.isLocked = false;
+          }
+        }
+      } else {
+        for	(i = index; i > 0; i--) {
+          column = this.state.columns[i];
+          column.isLocked = true;
+        }
+      }
       this.setState({columns: this.state.columns});
     }
-
-    this.state.data.isValidDrop = false;
   }
 
   render() {
     var listItems = this.state.columns.map(function(item, i) {
-      var dragging = (item === this.state.data.dragging) ? 'dragging' : '';
+      var classes = '';
+      if (item.isDragging) {
+        classes += 'dragging ';
+      }
+      if (item.isInsertBefore) {
+        classes += 'insertBefore ';
+      }
+      if (item.isInsertAfter) {
+        classes += 'insertAfter ';
+      }
+
+      if (item.isLocked)
+      {
+        return (
+          <li className='locked noselect' onDoubleClick={this.doubleClick.bind(this, item)}><i className="fa fa-lock"></i> {item.name}</li>
+        );
+      }
       return (
-        <li data-id={i}
-            data-key={item.id}
-            className={dragging}
-            key={i}
-            draggable="true"
-            onDragEnd={this.dragEnd.bind(this)}
-            onDragStart={this.dragStart.bind(this)}>
-          {item.name}
-        </li>
-      );
+      <Draggable item={item}
+                 onDragStart={this.dragStart.bind(this)}
+                 onDragStop={this.dragStop.bind(this)}
+                 onDragOver={this.dragOver.bind(this)}
+                 onDragLeave={this.dragLeave.bind(this)}>
+        <li onDoubleClick={this.doubleClick.bind(this, item)} className={classes}>{item.isDragging ? <i className="fa fa-bars"></i> : null} {item.name}</li>
+      </Draggable>);
     }, this);
     return (
       <div className="SortableList">
-        <ul onDragOver={this.dragOver.bind(this)}
-            onDragEnter={this.dragEnter.bind(this)}
-            onDragLeave={this.dragLeave.bind(this)}>
+        <ul>
           {listItems}
         </ul>
       </div>

@@ -6,6 +6,14 @@
 @inactive-color: #25282f;
 @description-color: #84898f;
 
+.absoluteTesting {
+  background: green;
+  position:absolute;
+  top:100px;
+  left:100px;
+}
+
+
 .SetupColumn {
 
 	&-container
@@ -18,8 +26,8 @@
 	
 	&-row
 	{
-			height: 100%;
-			display: table-row;
+		height: 100%;
+		display: table-row;
 	}
 	
 	&-col
@@ -32,8 +40,21 @@
 	{
     display: table-cell;
     width: 4%;
+    height:100%;
 	}
 	
+  &-col-fill
+	{
+    display: table-cell;
+    width: 48%;
+    height:100%;
+	}
+  
+  no-float
+  {
+    float: none;
+  }
+  
 	&-col-border
 	{
 		//border-left: 3px dashed @inactive-color;
