@@ -1,6 +1,6 @@
 # claygifford-Task
 
-> This project is a Test for Tradovate.
+> This project is a demonstration of ReactJs drag and drop.
 > You can use this app to simulate drag and drop for a Column Setup dialog
 > according to a few business rules. There are two sets of columns, 
 > available and visible.
